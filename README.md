@@ -17,10 +17,10 @@ Download the latest minified release from "Dest" and include it in your page:
 ```
 
 TREND LINES:
-![Alt Text](https://github.com/zrosenfield/ChartTools/img/chart-trend.png)
+![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-trend.png)
 
 FORECASTS:
-![Alt Text](https://github.com/zrosenfield/ChartTools/img/chart-forecast.png)
+![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-forecast.png)
 
 SEASONALITY:
-![Alt Text](https://github.com/zrosenfield/ChartTools/img/chart-difffromjan.png)
+![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-difffromjan.png)
