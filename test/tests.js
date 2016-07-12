@@ -5,18 +5,38 @@ if (typeof module !== 'undefined') {
 }
 
 var assert = chai.assert;
-var ct=new ChartTools([1,2,3]);
+var expect = chai.expect;
+var should = chai.should;
+
+var yValues = [8, 10, 12, 22, 17, 8, 6, 8, 12, 18, 22, 17];
+var xValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    for (var i=0;i<xValues.length;i++){
+        xValues[i] = getMonthFromString(xValues[i]);
+    }
+    function getMonthFromString(mon){
+        return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1;
+    }
+    
+var ct=new ChartTools(xValues, yValues);
 
 //Start Tests
 describe('ChartTools', function() {
     
     //Make sure data assignment worked
-    it('Data Assignment', function() {
-        assert.lengthOf(ct.data, 3);
-        var temp = [1,4,6,7,2,4];
-        ct.data = temp;
-        assert.lengthOf(ct.data, temp.length);
+    it('Constructor Assignment', function() {
+        assert.lengthOf(ct.x, 12);
     });
     
+    it('Diff From Point X', function() {
+        var diffs = ct.differenceFromPointY(0);
+        expect(diffs[0]).to.equal(0);
+        expect(diffs[1]).to.equal(25);
+        expect(diffs[6]).to.equal(-25);
+    });
+    
+    it('Trend Line', function() {
+        var trend = ct.trend()[1];
+        expect(trend[3]).to.equal(11.85);
+    });   
     
 });
