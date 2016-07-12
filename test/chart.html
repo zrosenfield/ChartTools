@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Mocha Tests</title>
+  <title>Chart Tests</title>
   <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
   <script   src="http://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
@@ -10,8 +10,9 @@
  
   <script src="../src/charttools.js"></script>   
   
+  
 
-  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  
 <script>
 $(document).ready(function() {
     var xValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -26,46 +27,42 @@ $(document).ready(function() {
     
     var ct=new ChartTools(xValues, yValues);
     
-    var chart = new Highcharts.Chart({
-        chart: { renderTo: 'container', type: 'line' },
-        title: {
-            text: 'Monthly Average Temperature',
-            x: -20 //center
-        },
-        subtitle: {
-            text: 'Source: WorldClimate.com',
-            x: -20
-        },
-        xAxis: {
-            categories: ct.x
-        },
-        yAxis: {
-            
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: 'Growth Rates',
-            data: ct.y
-        },
-        {
-            name: 'Difference From Jan',
-            data: ct.differenceFromPointY(0)
-        },
-        {
-            name: 'Trend',
-            data: ct.trend()[1]
-        }]
+    //TEST: Difference from x
+    var series = [
+        { name: 'Data Points', data: ct.y },
+        { name: 'Difference from Jan', data: ct.differenceFromPointY(0) }]
+    drawChart('diff1',ct, series,'Difference from Jan');
+    
+    //TEST: Trend Line (Least Squares)
+    var series = [
+        { name: 'Data Points', data: ct.y },
+        { name: 'Trend', data: ct.trend()[1] }]
+    drawChart('trend',ct, series,'Trend Line');
+    
+    //TEST: forecasting 6mo out.
+    var series = [
+        { name: 'Data Points', data: ct.y },
+        { name: 'Trend', data: ct.trend()[1] },
+        { name: 'Forecast', data: ct.forecast([13,14,15,16,17,18]) }]
+    drawChart('forecast6',ct, series,'6mo Forecast');
+    
+    console.log(ct.json());
+    
+    function drawChart(id, ct, series, title){
+        var iDiv = document.createElement('div');
+        iDiv.id = id;
+        document.getElementsByTagName('body')[0].appendChild(iDiv);
+        
+        $('#'+id).css('float','left');
+
+        var chart = new Highcharts.Chart({
+        chart: { renderTo: id, type: 'line', width:500 },
+        title: { text: title, x: -20 },
+        xAxis: { categories: ct.x  },
+        yAxis: { plotLines: [{ value: 0, width: 1, color: '#808080' }] },
+        series: series
     });
+    }
 });
 </script>
 

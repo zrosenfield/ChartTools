@@ -10,8 +10,10 @@ var ChartTools = (function(X,Y,Config){
     //variables
     var x = [];
     var y = [];
+    var m = -1;         //trend line
+    var b = -1;         //trend line
     var config = { 
-        decimals: 2   //if 0 or higher, round to that nubmer.  -1 to not round
+        decimals: 2     //if 0 or higher, round to that nubmer.  -1 to not round
     };
 
     //constructor
@@ -94,8 +96,8 @@ var ChartTools = (function(X,Y,Config){
 
         // Calculate m and b for the formular:
         // y = x * m + b
-        var m = (count * sum_xy - sum_x * sum_y) / (count * sum_xx - sum_x * sum_x);
-        var b = (sum_y / count) - (m * sum_x) / count;
+        m = (count * sum_xy - sum_x * sum_y) / (count * sum_xx - sum_x * sum_x);
+        b = (sum_y / count) - (m * sum_x) / count;
 
         //We will make the x and y result line now
         var result_values_x = [];
@@ -110,19 +112,55 @@ var ChartTools = (function(X,Y,Config){
 
         return [result_values_x, result_values_y];
     }
-
     
+    //FORECASTING
+    function forecast(xPoints){
+        if(m==-1 && b==-1){ GetTrend(); } //load m+b
+        
+        var tArray =[];
+               
+        //load data
+        for( var i = 0; i<xPoints.length; i++){
+            tArray[xPoints[i]]  = ( RoundNumber(  m*xPoints[i] + b  ) );
+        }
+        
+        //fill empty
+        for( i=0; i<x.length; i++){
+            if(tArray[i]===undefined){ tArray[i]=null; }
+        }
+        return tArray;
+    }
+    
+    //GET JSON
+    function GetJSON(){
+        if(x.length!=y.length){ error ('X and Y are not the same size arrays'); }
+        var tArray=[];
+        for( var i=0;i<x.length;i++ ){
+            tArray.push( {x: x[i], y: y[i]} );
+        }
+        return JSON.stringify(tArray);
+    }
+
     //Constructor  
     init(X,Y,Config);
-      
+    
+    function Error(message){
+        console.log(message);
+    }  
+    
     //Define public interface
     return {
         x: x,                                                   //XValues
         y: y,                                                   //YValues
+        
+        //FORMATS
+        json: GetJSON,
+        
+        //DATA MUNCH
         trend: GetTrend,                                        //Least Squares Trend Line
         differenceFromPointX: differenceFromPointX,             //Diff from X Value
-        differenceFromPointY: differenceFromPointY              //Diff from Y Value
-        
+        differenceFromPointY: differenceFromPointY,              //Diff from Y Value
+        forecast: forecast
     };
 
 });

@@ -37,6 +37,16 @@ describe('ChartTools', function() {
     it('Trend Line', function() {
         var trend = ct.trend()[1];
         expect(trend[3]).to.equal(11.85);
+    });  
+    
+    it('Forecast', function() {
+        var forecast = ct.forecast([12,13,14,15]);
+        expect(forecast[ct.x.length+1]).to.equal(17.2);
+    });    
+    
+    it('JSON', function() {
+        var json = ct.json();
+        expect(typeof JSON.parse(json)).to.equal('object');
     });   
     
 });
