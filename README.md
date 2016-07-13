@@ -16,11 +16,14 @@ Download the latest minified release from "Dest" and include it in your page:
 <script src="/charttools.js"></script> 
 ```
 
-TREND LINES:
+### TREND LINES
+
 ![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-trend.png)
 
-FORECASTS:
+### FORECASTS
+
 ![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-forecast.png)
 
-SEASONALITY:
+### SEASONALITY
+
 ![Alt Text](https://raw.githubusercontent.com/zrosenfield/ChartTools/master/img/chart-difffromjan.png)
